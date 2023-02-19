@@ -1,3 +1,46 @@
+# Fork specific readme
+
+This fork doesn't do anything other than building the docker image. All the code is the same. However the getting started can now be tweaked as follows:
+
+There's no need to spin up the container when you can fetch the default config from github and configure it before starting container for the first time.
+
+```bash
+$ mkdir /home/username/docker_configs/icantbelieveitsnotvaletudo
+$ cd /home/username/docker_configs/icantbelieveitsnotvaletudo
+$ # fetch the default config using whatever you like
+$ wget -O config.json https://raw.githubusercontent.com/nikolak/ICantBelieveItsNotValetudo/main/lib/res/default_config.json
+$ # edit the config in any editor you want, the mqtt is a must, everything else is optional
+$ vim config.json
+```
+
+
+Docker compose:
+
+```yml
+  icantbelieveitsnotvaletudo:
+    image: ghcr.io/nikolak/icantbelieveitsnotvaletudo:latest
+    container_name: "ICantBelieveItsNotValetudo"
+    restart: unless-stopped
+    # Enable ports if you enabled web endpoint in the config.json
+    #ports:
+    #  - 3000:3000
+    volumes:
+      - /home/username/docker_configs/icantbelieveitsnotvaletudo/config.json:/app/config.json:ro
+
+```
+
+Then just run
+
+```bash
+$ docker-compose up -d
+$ # verify that everything is working
+$ docker logs -f ICantBelieveItsNotValetudo
+$ # if you see a bunch of errors in the log, adjust the config as needed then restart
+$ docker restart ICantBelieveItsNotValetudo
+```
+
+# Original README
+
 <div align="center">
     <a href="https://github.com/Hypfer/Valetudo">
         <img src="https://github.com/Hypfer/Valetudo/blob/master/assets/logo/valetudo_logo_with_name.svg" width="800" alt="valetudo">
